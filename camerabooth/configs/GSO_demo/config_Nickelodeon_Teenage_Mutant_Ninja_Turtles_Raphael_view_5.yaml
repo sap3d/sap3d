@@ -1,0 +1,167 @@
+data:
+  params:
+    batch_size: 1
+    in_the_wild: true
+    nearest_cond_views: true
+    num_workers: 0
+    objaverse_path: /shared/xinyang/threetothreed/dataset/data/objaverse
+    reg_objaverse: true
+    root_dir: ../dataset/data/train/GSO_demo/Nickelodeon_Teenage_Mutant_Ninja_Turtles_Raphael
+    total_view: 3
+    train:
+      image_transforms:
+        size: 256
+      validation: false
+    train_view: 5
+    validation:
+      image_transforms:
+        size: 256
+      validation: true
+  target: ldm.data.simple.ObjaverseDataModuleFromConfig
+lightning:
+  callbacks:
+    ckpt_callback:
+      params:
+        save_flag: true
+    image_logger:
+      params:
+        a_gt:
+        - 0.5000000000000002
+        - 0.5000000070739952
+        - 0.5000000070739952
+        - 0.500000041230269
+        - 0.3333332954705218
+        b_gt:
+        - 0.0
+        - 0.8750000063242495
+        - 0.12499999367575056
+        - 0.625000012648499
+        - 0.3750000084746675
+        batch_frequency: 40000
+        c_gt:
+        - -2.9802321118869e-07
+        - 1.4395592495830556e-07
+        - 1.4395592495830556e-07
+        - 1.439559582649963e-07
+        - -1.1229550305509e-07
+        disabled: false
+        in_the_wild: true
+        increase_log_steps: false
+        log_first_step: true
+        log_images_kwargs:
+          N: 64
+          inpaint: false
+          plot_diffusion_rows: false
+          plot_progressive_rows: false
+          unconditional_guidance_label:
+          - ''
+          unconditional_guidance_scale: 3.0
+          use_ema_scope: false
+        max_images: 64
+        only_camera: false
+      target: main.ImageLogger
+  find_unused_parameters: false
+  metrics_over_trainsteps_checkpoint: true
+  modelcheckpoint:
+    params:
+      every_n_train_steps: 50
+  trainer:
+    accumulate_grad_batches: 1
+    benchmark: true
+    max_epochs: 100
+    num_sanity_val_steps: 0
+    val_check_interval: 10
+model:
+  base_learning_rate: 0.0001
+  params:
+    a_init:
+    - 0.4999726929634141
+    - 0.49997398534201687
+    - 0.4999765566105729
+    - 0.5038161170124543
+    - 0.33533778639065487
+    b_init:
+    - 0.0
+    - 0.8739291031880054
+    - 0.12636745532645222
+    - 0.6250963300820673
+    - 0.3751892234430815
+    c_init:
+    - 0.00014612876773987895
+    - 0.0017040525427306338
+    - 0.0016795263515694586
+    - 0.00031711550048028696
+    - 0.00038392732876043776
+    channels: 4
+    cond_stage_config:
+      target: ldm.modules.encoders.modules.FrozenCLIPImageEmbedder
+    cond_stage_key: image_cond
+    cond_stage_trainable: false
+    conditioning_key: hybrid
+    first_stage_config:
+      params:
+        ddconfig:
+          attn_resolutions: []
+          ch: 128
+          ch_mult:
+          - 1
+          - 2
+          - 4
+          - 4
+          double_z: true
+          dropout: 0.0
+          in_channels: 3
+          num_res_blocks: 2
+          out_ch: 3
+          resolution: 256
+          z_channels: 4
+        embed_dim: 4
+        lossconfig:
+          target: torch.nn.Identity
+        monitor: val/rec_loss
+      target: ldm.models.autoencoder.AutoencoderKL
+    first_stage_key: image_target
+    image_size: 32
+    linear_end: 0.012
+    linear_start: 0.00085
+    log_directions: 8
+    log_every_t: 200
+    lr_ratio: 1000
+    monitor: val/loss_simple_ema
+    num_timesteps_cond: 1
+    scale_factor: 0.18215
+    scheduler_config:
+      params:
+        lr_max: 0.1
+        lr_min: 1.0e-06
+        lr_start: 1.0e-07
+        max_decay_steps: 400
+        warm_up_steps: 20
+      target: ldm.lr_scheduler.LambdaWarmUpCosineScheduler
+    search_camera: false
+    timesteps: 1000
+    unet_config:
+      params:
+        attention_resolutions:
+        - 4
+        - 2
+        - 1
+        channel_mult:
+        - 1
+        - 2
+        - 4
+        - 4
+        context_dim: 768
+        image_size: 32
+        in_channels: 8
+        legacy: false
+        model_channels: 320
+        num_heads: 8
+        num_res_blocks: 2
+        out_channels: 4
+        transformer_depth: 1
+        use_checkpoint: true
+        use_spatial_transformer: true
+      target: ldm.modules.diffusionmodules.openaimodel.UNetModel
+    unet_trainable: attn
+  target: ldm.models.diffusion.ddpm.LatentDiffusion

@@ -1,0 +1,146 @@
+import os
+import cv2
+import numpy as np
+from multiprocessing import Pool
+
+# 定义要处理的基础目录和视图目录
+base_dir = '/shared/xinyang/threetothreed/test_recon/threestudio'
+# views_to_process = ['experiments_GSO_demo_new_view_{}_nerf'.format(i) for i in range(1, 6)]
+
+# views_to_process = [
+#     '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_view_5_nerf',
+#     '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_view_4_nerf',
+#     '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_view_3_nerf',
+#     '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_view_2_nerf',
+#     '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_view_1_nerf',
+#     '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_XINYANG_XINYANG_CAP_view_5_nerf_old',
+#     '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_XINYANG_XINYANG_CAP_view_4_nerf_old',
+#     '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_XINYANG_XINYANG_CAP_view_3_nerf_old',
+#     '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_XINYANG_XINYANG_CAP_view_2_nerf_old',
+#     '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_XINYANG_CAP_view_1_nerf_baseline',
+#     '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_tab3_row1_view_3_nerf',
+#     '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_tab3_row2_view_3_nerf',
+#     '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_tab3_row3_view_3_nerf',
+#     '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_tab3_row4_view_3_nerf'
+# ]
+# views_to_process = [
+#     '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_XINYANG_NEW_view_5_nerf',
+#     '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_XINYANG_NEW_view_4_nerf',
+#     '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_XINYANG_NEW_view_3_nerf',
+#     '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_XINYANG_NEW_view_2_nerf',
+#     '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_XINYANG_NEW_view_1_nerf',
+# ]
+
+views_to_process = [
+        # '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_view_5_nerf',
+        # '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_view_4_nerf',
+        # '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_view_3_nerf',
+        # '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_view_2_nerf',
+        # '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_view_1_nerf',
+        # '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_XINYANG_XINYANG_CAP_view_5_nerf_old',
+        # '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_XINYANG_XINYANG_CAP_view_4_nerf_old',
+        # '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_XINYANG_XINYANG_CAP_view_3_nerf_old',
+        # '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_XINYANG_XINYANG_CAP_view_2_nerf_old',
+        # '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_XINYANG_CAP_view_1_nerf_baseline',
+        # '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_tab3_row1_view_3_nerf',
+        # '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_tab3_row2_view_3_nerf',
+        # '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_tab3_row3_view_3_nerf',
+        # '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_tab3_row4_view_3_nerf',
+        # '/shared/xinyang/threetothreed/threestudio/experiments_ours_3view',
+        # '/shared/xinyang/threetothreed/threestudio/experiments_zero123_3view',
+        # * new view gso demo
+        '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_new_view_5_nerf',
+        '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_new_view_4_nerf',
+        '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_new_view_3_nerf',
+        '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_new_view_2_nerf',
+        '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_new_view_1_nerf',
+        # * gso demo
+        '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_view_5_nerf',
+        '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_view_4_nerf',
+        '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_view_3_nerf',
+        '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_view_2_nerf',
+        '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_view_1_nerf',
+        # * gso demo w/o adaption (ft zero123)
+        '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_tab3_row1_view_3_nerf',
+        # * gso demo w relpose_org
+        '/shared/xinyang/threetothreed/test_recon/threestudio/experiments_GSO_demo_tab3_row2_view_3_nerf',
+    ]
+
+# 将黑色或接近黑色的像素转换为白色的函数
+def make_black_to_white(img, black_threshold=10):
+    white_img = np.where((img < black_threshold).all(axis=-1, keepdims=True), 255, img)
+    return white_img
+
+# 向图像添加alpha通道的函数
+def add_alpha_channel(img, alpha_img):
+    if alpha_img.ndim == 2:
+        alpha_img = alpha_img[:, :, np.newaxis]
+    rgba_img = np.concatenate((img, alpha_img), axis=-1)
+    return rgba_img
+
+# 处理单个timestamp目录下的normal和rgb图像
+def process_timestamp_dir(timestamp_dir):
+    save_dir = os.path.join(timestamp_dir, 'save')
+    if not os.path.exists(save_dir):
+        print(f"保存目录不存在：{save_dir}")
+        return
+    
+    normal_pred_dir = os.path.join(save_dir, 'normal_pred')
+    rgb_pred_dir = os.path.join(save_dir, 'rgb_pred')
+    alpha_pred_dir = os.path.join(save_dir, 'alpha_pred')
+    depth_pred_dir = os.path.join(save_dir, 'depth_pred')
+
+    # 优先使用alpha_pred目录下的图像，如果不存在则使用depth_pred目录
+    alpha_depth_dir = alpha_pred_dir if os.path.exists(alpha_pred_dir) else depth_pred_dir
+    if not os.path.exists(alpha_depth_dir):
+        # print(f"alpha/depth图像目录不存在于：{save_dir}")
+        return
+    else:
+        print(f"alpha/depth图像目录存在于：{save_dir}")
+
+    if os.path.exists(alpha_pred_dir):
+        print(f"!!alpha图像目录存在于：{save_dir}")
+
+    normal_white_alpha_dir = os.path.join(save_dir, 'normal_white_alpha')
+    rgb_alpha_dir = os.path.join(save_dir, 'rgb_with_alpha')
+    os.makedirs(normal_white_alpha_dir, exist_ok=True)
+    os.makedirs(rgb_alpha_dir, exist_ok=True)
+
+    # 处理normal和rgb图像
+    for pred_dir, out_dir, is_normal in [(normal_pred_dir, normal_white_alpha_dir, True), 
+                                          (rgb_pred_dir, rgb_alpha_dir, False)]:
+        if os.path.exists(pred_dir):
+            for img_filename in os.listdir(pred_dir):
+                img_path = os.path.join(pred_dir, img_filename)
+                alpha_depth_img_path = os.path.join(alpha_depth_dir, img_filename)
+                if not os.path.isfile(img_path) or not os.path.isfile(alpha_depth_img_path):
+                    continue
+
+                img = cv2.imread(img_path, cv2.IMREAD_UNCHANGED)
+                if img is None or img.shape[2] != 3:
+                    continue
+
+                alpha_depth_img = cv2.imread(alpha_depth_img_path, cv2.IMREAD_UNCHANGED)
+                if alpha_depth_img is None or (alpha_depth_img.ndim == 3 and alpha_depth_img.shape[2] == 3):
+                    continue
+
+                if is_normal:
+                    img = make_black_to_white(img)
+                rgba_img = add_alpha_channel(img, alpha_depth_img if alpha_depth_img.ndim == 2 else alpha_depth_img[:, :, 0])
+                cv2.imwrite(os.path.join(out_dir, img_filename), rgba_img)
+
+# 并行处理每个视图目录下的所有对象目录
+def process_view_dirs_in_parallel(view_dirs):
+    timestamp_dirs = []
+    for view_dir in view_dirs:
+        for object_name in os.listdir(view_dir):
+            object_dir = os.path.join(view_dir, object_name)
+            timestamp_dirs.extend([os.path.join(object_dir, name) for name in os.listdir(object_dir)])
+
+    with Pool(processes=os.cpu_count()) as pool:
+        pool.map(process_timestamp_dir, timestamp_dirs)
+
+# 主函数
+if __name__ == '__main__':
+    view_dirs = [os.path.join(base_dir, view) for view in views_to_process]
+    process_view_dirs_in_parallel(view_dirs)

@@ -1,0 +1,137 @@
+import os
+import gzip
+import json
+import tqdm
+import imageio
+import numpy as np
+from matplotlib import pyplot as plt
+import pdb
+
+def normalize_rotation_matrices(rotation):
+
+    # 使用奇异值分解（SVD）分解矩阵 R
+    U, S, Vt = np.linalg.svd(rotation)
+
+    # 修正行列式为+1（确保正向旋转）
+    det = np.linalg.det(U @ Vt)
+    if det < 0:
+        Vt[-1, :] *= -1  # 反转最后一行以修正行列式为+1
+
+    # 重新构建归一化的旋转矩阵并添加到列表中
+    normalized_R = U @ Vt
+
+    return normalized_R
+
+def normalize_translation(translation):
+
+    normalized_tran = translation / np.linalg.norm(translation)
+
+    return normalized_tran
+
+def mask_to_bbox(mask):
+    """
+    xyxy format
+    """
+    mask[mask > 0.1] = 255
+    if not np.any(mask):
+        return []
+    rows = np.any(mask, axis=1)
+    cols = np.any(mask, axis=0)
+    rmin, rmax = np.where(rows)[0][[0, -1]]
+    cmin, cmax = np.where(cols)[0][[0, -1]]
+    return [int(cmin), int(rmin), int(cmax) + 1, int(rmax) + 1], mask
+
+def get_configures():
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--input_path', type=str, default='/shared/xinyang/views_release')
+    parser.add_argument('--target_path', type=str, default='/shared/xinyang/zelin_dev/threetothreed/data/objaverse')
+    parser.add_argument('--output_path', type=str, default='data/finetune_data')
+
+    return parser.parse_args()
+
+if __name__ == '__main__':
+    args = get_configures()
+    if not os.path.exists(args.output_path):
+        os.makedirs(args.output_path)
+
+    image_hight       = 512
+    image_width       = 512
+    camera_angle_x    = 0.857 # 49.1, default setted by zero123
+    focal_x           = 0.5 * image_width / np.tan(0.5 * camera_angle_x)
+    focal_y           = 0.5 * image_hight / np.tan(0.5 * camera_angle_x)
+    principal_point_x = image_width//2 * 1.0 - 0.5
+    principal_point_y = image_hight//2 * 1.0 - 0.5
+    # convert to co3d annotation format
+    scale             = (min(image_width,image_hight) - 1.0) * 0.5
+    focal_x           = 2.0 * focal_x / (image_width-1.0)
+    focal_y           = 2.0 * focal_y / (image_hight-1.0)
+    principal_point_x = (0.5 * (image_width-1.0) - principal_point_x) / scale
+    principal_point_y = (0.5 * (image_hight-1.0) - principal_point_y) / scale
+
+    view_release_dict  = {}
+
+    # * for objaverse we select using clip
+    all_class_set = set()
+    data_folders = [
+        '../dataset/data/train/GSO',
+        '../dataset/data/train/XINYANG_NEW',
+        '../dataset/data/train/ANGJOO',
+        '../dataset/data/train/NAVI',
+    ]
+    for data_folder in data_folders:
+        data_paths  = [f'{data_folder}/{i}' for i in os.listdir(data_folder)]
+        for data_path in data_paths:
+            # * top 20 from low to high
+            query_match_paths = np.load(f'{data_path}/query_class/query_match_paths.npy')
+            for query_match_path in query_match_paths:
+                sub_class = query_match_path.split('/')[-1]
+                all_class_set.add(sub_class)
+    
+    gso_paths = [f'../dataset/data/objaverse/{i}' for i in all_class_set]
+    for gso_path in tqdm.tqdm(gso_paths):
+        view_cls = gso_path.split('/')[-1]
+        view_data = []
+        image_png_paths = [
+            f'{gso_path}/images/{i:03d}.png' for i in range(24)
+        ]
+        pose_npy_paths = [
+            f'{gso_path}/poses/{i:03d}.npy' for i in range(24)
+        ]
+
+        for index in range(24):
+            image_png_path = image_png_paths[index]
+            pose_npy_path  = pose_npy_paths[index]
+            # compute mask and bbox
+            mask = imageio.imread(image_png_path)[..., -1]
+            result = mask_to_bbox(mask)
+
+            if result is not None:
+                bbox, mask = result
+
+                pose         = np.load(pose_npy_path)
+                # * pose assignment
+                r_mtx        = pose[:3,:3].tolist()
+                t_vec        = pose[:3,3].tolist()
+                focal        = [focal_x, focal_y]
+                principal_pt = [principal_point_x, principal_point_y]
+
+                view_data.append(
+                    {
+                        "filepath"       : image_png_path,
+                        "bbox"           : bbox,
+                        "R"              : r_mtx,
+                        "T"              : t_vec,
+                        "focal_length"   : focal,
+                        "principal_point": principal_pt,
+                    }
+                )
+        if len(view_data) == 24:
+            view_release_dict[f'{view_cls}'] = view_data
+
+    output_file = f'{args.output_path}/objaverse_train.jgz'
+    with gzip.open(output_file, "w") as f:
+        print(f'Saving objaverse_train.jgz at {args.output_path}')
+        print(len(view_release_dict))
+        f.write(json.dumps(view_release_dict).encode("utf-8"))

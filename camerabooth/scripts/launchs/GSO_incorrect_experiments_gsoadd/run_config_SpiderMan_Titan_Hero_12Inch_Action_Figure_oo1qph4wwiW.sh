@@ -1,0 +1,14 @@
+#!/bin/bash
+GPU_ID=$1 
+CUDA_VISIBLE_DEVICES=${GPU_ID} python \
+    main.py \
+    -t \
+    --base configs/GSO_incorrect_experiments_gsoadd/config_SpiderMan_Titan_Hero_12Inch_Action_Figure_oo1qph4wwiW.yaml \
+    --gpus 0, \
+    --scale_lr False \
+    --num_nodes 1 \
+    --seed 42 \
+    --check_val_every_n_epoch 10 \
+    --finetune_from zero123_sm.ckpt \
+    --project_name GSO_incorrect_experiments_gsoadd/config_SpiderMan_Titan_Hero_12Inch_Action_Figure_oo1qph4wwiW \
+    --logdir logs_GSO_add
