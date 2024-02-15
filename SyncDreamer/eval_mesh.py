@@ -11,6 +11,7 @@ from ldm.base_utils import project_points, mask_depth_to_pts, pose_inverse, pose
 import open3d as o3d
 import mesh2sdf
 import nvdiffrast.torch as dr
+import json
 
 DEPTH_MAX, DEPTH_MIN = 2.4, 0.6
 DEPTH_VALID_MAX, DEPTH_VALID_MIN = 2.37, 0.63
@@ -216,40 +217,60 @@ def find_last_log(dir_path):
     # 如果没有找到，返回None
     return None
 
+def save_results_to_json(results, path):
+    with open(path, 'w') as f:
+        json.dump(results, f, indent=4)
+
+def create_directory_structure(base_path, object_type, object_name, object_view):
+    path = os.path.join(base_path, object_type, object_name, object_view)
+    os.makedirs(path, exist_ok=True)
+    return path
+
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description='Process some parameters.')
     parser.add_argument('--target_res', type=str, default='experiments_GSO_demo_mesh_view_5', help='The target resolution (default: experiments_GSO_demo_mesh_view_5)')
+    parser.add_argument('--OBJECT_TYPE', type=str, required=True, help='The object type')
+    parser.add_argument('--OBJECT_NAME', type=str, required=True, help='The object name')
+    parser.add_argument('--OBJECT_VIEW', type=str, required=True, help='The object view')
+    parser.add_argument('--ROOT_DIR', type=str, required=True, help='The ROOT_DIR')
     args = parser.parse_args()
+
     target_res = args.target_res
+    OBJECT_TYPE = args.OBJECT_TYPE
+    OBJECT_NAME = args.OBJECT_NAME
+    OBJECT_VIEW = args.OBJECT_VIEW
+    ROOT_DIR = args.ROOT_DIR
+    results_base_path = os.path.join(ROOT_DIR, 'results')
+    results_path = create_directory_structure(results_base_path, OBJECT_TYPE, OBJECT_NAME, OBJECT_VIEW)
 
+    results = []
+    class_name = OBJECT_NAME
+    log_path = f'../3D_Recon/threestudio/{target_res}/{class_name}'
+    latest_dir = find_last_log(log_path)
+    if os.path.exists(f'{latest_dir}/save/it4500-export/model.obj'):
+        chamfer, iou, f1_score_0_1, f1_score_0_2, f1_score_0_3 = eval_3d_metrics(
+            f'../dataset/3d_models/GSO_obj/{class_name}/meshes/model.obj', 
+            f'{latest_dir}/save/it4500-export/model.obj', 
+            class_name, 
+            class_name,
+        )
+        result = {
+            'NAME': class_name,
+            'CD': chamfer,
+            'IOU': iou,
+            'F1_01': f1_score_0_1,
+            'F1_02': f1_score_0_2,
+            'F1_03': f1_score_0_3
+        }
+        results.append(result)
 
-    taget_res = 'experiments_GSO_demo_mesh_view_5'
-    class_names = set(os.listdir(f'../3D_Recon/threestudio/{taget_res}'))
-    chamfer_all = []
-    iou_all = []
-    f1_score_0_1_all = []
-    f1_score_0_2_all = []
-    f1_score_0_3_all = []
-    i = 0
-    for class_name in tqdm(class_names):
-        log_path = f'../3D_Recon/threestudio/{taget_res}/{class_name}'
-        latest_dir = find_last_log(log_path)
-        if os.path.exists(f'{latest_dir}/save/it4500-export/model.obj'):
-            chamfer, iou, f1_score_0_1, f1_score_0_2, f1_score_0_3 = eval_3d_metrics(
-                f'../dataset/3d_models/GSO_obj/{class_name}/meshes/model.obj', 
-                f'{latest_dir}/save/it4500-export/model.obj', 
-                class_name, 
-                class_name,
-            )
-            tqdm.write(f'NAME: {class_name} CD: {chamfer:.3f} IOU: {iou:.3f} F1_01: {f1_score_0_1:.3f} F1_02: {f1_score_0_2:.3f} F1_03: {f1_score_0_3:.3f}')
-            chamfer_all.append(chamfer)
-            iou_all.append(iou)
-            f1_score_0_1_all.append(f1_score_0_1)
-            f1_score_0_2_all.append(f1_score_0_2)
-            f1_score_0_3_all.append(f1_score_0_3)
-    
-    print(f'Average Chamfer Distance: {np.mean(chamfer_all):.3f}')
-    print(f'Average IOU: {np.mean(iou_all):.3f}')
-    print(f'Average F1 Score (Threshold 0.1): {np.mean(f1_score_0_1_all):.3f}')
-    print(f'Average F1 Score (Threshold 0.2): {np.mean(f1_score_0_2_all):.3f}')
-    print(f'Average F1 Score (Threshold 0.3): {np.mean(f1_score_0_3_all):.3f}')
+    # 保存到JSON
+    json_path = os.path.join(results_path, f'results.json')
+    save_results_to_json(results, json_path)
+
+    # 打印平均结果
+    print(f'Average Chamfer Distance: {np.mean([r["CD"] for r in results]):.3f}')
+    print(f'Average IOU: {np.mean([r["IOU"] for r in results]):.3f}')
+    print(f'Average F1 Score (Threshold 0.1): {np.mean([r["F1_01"] for r in results]):.3f}')
+    print(f'Average F1 Score (Threshold 0.2): {np.mean([r["F1_02"] for r in results]):.3f}')
+    print(f'Average F1 Score (Threshold 0.3): {np.mean([r["F1_03"] for r in results]):.3f}')

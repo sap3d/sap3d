@@ -20,8 +20,7 @@ from threestudio.utils.ops import (
     get_rays,
 )
 from threestudio.utils.typing import *
-import numpy as np
-import pdb
+
 
 @dataclass
 class RandomCameraDataModuleConfig:
@@ -347,75 +346,21 @@ class RandomCameraDataset(Dataset):
             self.n_views = self.cfg.n_test_views
 
         azimuth_deg: Float[Tensor, "B"]
-        # if self.split == "val":
-        # make sure the first and last view are not the same
-        # azimuth_deg = torch.linspace(0, 360.0, self.n_views + 1)[: self.n_views]
-        # elevation_deg: Float[Tensor, "B"] = torch.full_like(
-        #     azimuth_deg, self.cfg.eval_elevation_deg
-        # )
-        # camera_distances: Float[Tensor, "B"] = torch.full_like(
-        #     elevation_deg, self.cfg.eval_camera_distance
-        # )
 
-        # HXY: ORI
-        # num_elevation = 7
-        # num_azimuth   = 49
-        # self.n_views  = num_elevation * num_azimuth
-        # azimuth_deg: Float[Tensor, "B"] = torch.tensor(
-        #     [0. + i * 7.5 for i in range(num_azimuth)] * num_elevation
-        # ).float()
-        # elevation_deg: Float[Tensor, "B"] = torch.tensor(
-        #     [ 45] * num_azimuth + [ 30] * num_azimuth + [ 15] * num_azimuth + \
-        #     [  0] * num_azimuth + \
-        #     [-15] * num_azimuth + [-30] * num_azimuth + [-45] * num_azimuth
-        # ).float()
-        # camera_distances: Float[Tensor, "B"] = torch.full_like(
-        #     elevation_deg, self.cfg.eval_camera_distance
-        # )
-
-        # HXY: For supp
-        total_frames = 360
-        self.n_views = total_frames
-
-        # Define the pattern of elevation change across the frames.
-        # The camera elevation changes from 0 to 30 to 0 to -30 to 0 degrees in four segments.
-        segment_frames = total_frames // 4  # Splitting the total frames into four segments for the pattern
-
-        # Initialize the elevation array to the pattern.
-        # The np.linspace function is used to create arrays of linearly spaced numbers in specified intervals.
-        # We use radians for the elevation angles, hence the conversion from degrees to radians by multiplying with pi/180.
-        delta_elevations = np.concatenate([
-            np.linspace(0, 30 * np.pi / 180, segment_frames, endpoint=False),    # Ascend from 0 to 30 degrees
-            np.linspace(30 * np.pi / 180, 0, segment_frames, endpoint=False),    # Descend back to 0 degrees
-            np.linspace(0, -30 * np.pi / 180, segment_frames, endpoint=False),   # Descend from 0 to -30 degrees
-            np.linspace(-30 * np.pi / 180, 0, segment_frames, endpoint=True)     # Ascend back to 0 degrees
-        ])
-
-        # Initialize the azimuth array to cover 4 full rotations.
-        # Since we want the azimuth to complete 4 full rotations, we multiply 2*pi (a full circle in radians) by 4.
-        # The azimuth will be in radians, completing a full rotation every 90 frames.
-        delta_azimuths = np.linspace(0, 2 * np.pi * 4, total_frames, endpoint=False)
-
-        # Convert the numpy arrays to PyTorch tensors and cast them to float type.
-        # The 'torch.tensor' function converts the numpy array to a tensor, and the '.float()' method casts it to float32.
-        azimuth_deg = torch.tensor(delta_azimuths * (180 / np.pi)).float()  # Convert to degrees for consistency with your previous code.
-        elevation_deg = torch.tensor(delta_elevations * (180 / np.pi)).float()
-
-        # Assuming self.cfg.eval_camera_distance is a predefined value for camera distance.
-        # Create a tensor for camera distances, with the same shape as elevation_deg, all values set to eval_camera_distance.
-        camera_distances = torch.full_like(elevation_deg, self.cfg.eval_camera_distance).float()
-        print(azimuth_deg.shape)
-        print(elevation_deg.shape)
-        print(camera_distances.shape)
-        # pdb.set_trace()
-        # else:
-        #     azimuth_deg = torch.linspace(0, 360.0, self.n_views)
-        #     elevation_deg: Float[Tensor, "B"] = torch.full_like(
-        #         azimuth_deg, self.cfg.eval_elevation_deg
-        #     )
-        #     camera_distances: Float[Tensor, "B"] = torch.full_like(
-        #         elevation_deg, self.cfg.eval_camera_distance
-        #     )
+        num_elevation = 7
+        num_azimuth   = 12
+        self.n_views  = num_elevation * num_azimuth
+        azimuth_deg: Float[Tensor, "B"] = torch.tensor(
+            [0. + i * 30 for i in range(num_azimuth)] * num_elevation
+        ).float()
+        elevation_deg: Float[Tensor, "B"] = torch.tensor(
+            [ 45] * num_azimuth + [ 30] * num_azimuth + [ 15] * num_azimuth + \
+            [  0] * num_azimuth + \
+            [-15] * num_azimuth + [-30] * num_azimuth + [-45] * num_azimuth
+        ).float()
+        camera_distances: Float[Tensor, "B"] = torch.full_like(
+            elevation_deg, self.cfg.eval_camera_distance
+        )
 
         elevation = elevation_deg * math.pi / 180
         azimuth = azimuth_deg * math.pi / 180

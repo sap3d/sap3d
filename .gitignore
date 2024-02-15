@@ -20,3 +20,4 @@ run_pipeline_mission_four_debug.sh
 dataset/data/objaverse.tar.gz
 **/*.tar.gz
 **/*.pth.tmp
+results

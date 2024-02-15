@@ -47,7 +47,7 @@ def get_configures():
 
 if __name__ == "__main__":
     train_params = {
-        'max_epoch'      : 1,
+        'max_epoch'      : 100,
         'lr_max'         : 0.1,
         'lr_ratio'       : 1000,
         'warm_up_steps'  : 20,

@@ -6,6 +6,7 @@ import yaml
 import numpy as np
 import pdb
 import argparse
+import json
 
 def compute_angular_error_batch(rotation1, rotation2):
     R_rel = np.einsum("Bij,Bjk ->Bik", rotation1.transpose(0, 2, 1), rotation2)
@@ -59,15 +60,46 @@ def ear2rotation(elevation, azimuth, camera_distances):
     c2w[:, 3, 3] = 1.0
     return c2w
 
+def update_results_in_json(new_data, path):
+    """Update specific dictionary within a list in a JSON file with new key-value pairs."""
+    if os.path.exists(path):
+        with open(path, 'r') as f:
+            existing_data = json.load(f)
+        # Check if the data structure is a list of dictionaries
+        if isinstance(existing_data, list) and all(isinstance(item, dict) for item in existing_data):
+            # Try to find the dictionary with the matching NAME
+            for item in existing_data:
+                item.update(new_data)  # Update the dictionary with new key-value pairs
+                break
+            else:
+                # If no matching NAME is found, append new data as a new dictionary
+                existing_data.append(new_data)
+        else:
+            print("Error: JSON structure is not a list of dictionaries")
+            return
+    else:
+        # If the file does not exist, initialize it with the new data in a list
+        existing_data = [new_data]
+    
+    with open(path, 'w') as f:
+        json.dump(existing_data, f, indent=4)
+
 if __name__ == '__main__':  
-    parser = argparse.ArgumentParser(description="Process some integers.")
-    parser.add_argument('--object_type', type=str, default='GSO_demo', 
-                        help='Type of the object (default: GSO_demo)')
-    parser.add_argument('--train_view', type=int, default=5, 
-                        help='Number of training views (default: 5)')
-    args = parser.parse_args()                
-    object_type = args.object_type
-    train_view = args.train_view
+    parser = argparse.ArgumentParser(description="Evaluate 3D meshes.")
+    parser.add_argument('--OBJECT_TYPE', type=str, required=True, help='The type of the object')
+    parser.add_argument('--OBJECT_NAME', type=str, required=True, help='The name of the object')
+    parser.add_argument('--OBJECT_VIEW', type=int, required=True, help='The view number of the object')
+    parser.add_argument('--ROOT_DIR', type=str, required=True, help='The root directory for saving results')
+    args = parser.parse_args()              
+    object_type = args.OBJECT_TYPE
+    object_name = args.OBJECT_NAME
+    object_view = args.OBJECT_VIEW
+    root_dir = args.ROOT_DIR
+    train_view = object_view
+
+    results_directory = os.path.join(root_dir, "results", object_type, object_name, str(object_view))
+    os.makedirs(results_directory, exist_ok=True)
+    results_file_path = os.path.join(results_directory, "results.json")
 
     epoch_folder_pattern = re.compile(r'epoch_(\d+)')
 
@@ -202,6 +234,14 @@ if __name__ == '__main__':
                 error_R = compute_angular_error_batch(R_pred_rel, R_gt_rel)
                 
                 all_error_R.append(np.mean(error_R))
+
+    new_results = {
+        "Rotation Error": np.mean(all_error_R),
+        "Elevation": np.mean(mean_e_after) * 180 / np.pi,
+        "Azimuth": np.mean(mean_a_after) * 180 / np.pi,
+        "Radius": np.mean(mean_r_after)
+    }
+    update_results_in_json(new_results, results_file_path)
 
     print('View')
     print(train_view)
