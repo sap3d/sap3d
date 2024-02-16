@@ -69,7 +69,7 @@ To execute the pipeline for all examples in the `dataset/data/train/GSO_demo` di
 python run_pipeline.py --object_type GSO_demo
 ```
 
-### Viewing the Results
+### Results and Numbers
 - **2D NVS Outputs**: These can be found in the `camerabooth/experiments_nvs/GSO_demo` directory.
 - **3D NVS Outputs**: Look for these in folders named like `3D_Recon/threestudio/experiments_GSO_demo_view_5_nerf`.
 - **Evaluation Numbers**: Quantitative results are stored under `results` folder.
