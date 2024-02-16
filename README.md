@@ -53,7 +53,7 @@ This pipeline encompasses 3 stages for pose estimation and reconstruction:
 
 ### Reconstruction and Evaluation
 
-**For Processing Individual Objects**:
+**Reconstructing Individual Objects**:
 To process a specific object, kindly use the command below:
 ```bash
 sh run_pipeline.sh GSO_demo OBJECT_NAME INPUT_VIEWS GPU_INDEX
@@ -63,7 +63,7 @@ For instance:
 sh run_pipeline.sh GSO_demo MINI_FIRE_ENGINE 5 0
 ```
 
-**For Batch Processing**:
+**Batch Processing**:
 To execute the pipeline for all examples in the `dataset/data/train/GSO_demo` directory, please run:
 ```bash
 python run_pipeline.py --object_type GSO_demo
