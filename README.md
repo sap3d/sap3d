@@ -72,7 +72,7 @@ python run_pipeline.py --object_type GSO_demo
 ### Viewing the Results
 - **2D NVS Outputs**: These can be found in the `camerabooth/experiments_nvs/GSO_demo` directory.
 - **3D NVS Outputs**: Look for these in folders named like `3D_Recon/threestudio/experiments_GSO_demo_view_5_nerf`.
-- **Numbers**: Quantitative results would be printed on the screen after each object is reconstructed.
+- **Evaluation Numbers**: Quantitative results are stored under `results` folder.
 
 
 
