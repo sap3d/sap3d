@@ -4,7 +4,7 @@
 # cd $ROOT_DIR
 # sh run_pipeline.sh GSO_demo MINI_FIRE_ENGINE 5 0
 
-ROOT_DIR=/shared/xinyang/SAP3D-test
+ROOT_DIR=ROOT_DIR # Change to Your ROOT_DIR
 
 OBJECT_TYPE=$1
 OBJECT_NAME=$2
