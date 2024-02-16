@@ -51,7 +51,7 @@ This pipeline encompasses 3 stages for pose estimation and reconstruction:
 ### Initial Setup
 - **Configuring the Working Directory**: Please set your `ROOT_DIR` in the `run_pipeline.sh` script as the first step before launching the pipeline.
 
-### Executing the Pipeline
+### Reconstruction and Evaluation
 
 **For Processing Individual Objects**:
 To process a specific object, kindly use the command below:
