@@ -766,30 +766,11 @@ class ImageLogger(Callback):
                     'azimuth_gt'     : azimuth_gt,
                     'radius_pred'    : radius_pred,
                     'radius_gt'      : radius_gt,
-                    # 'elevation_error': elevation_error,
-                    # 'azimuth_error'  : azimuth_error,
-                    # 'radius_error'   : radius_error,
-                    # 'nvs_psnr'       : self.nvs_psnr,
-                    # 'nvs_ssim'       : self.nvs_ssim,
-                    # 'nvs_lpips'      : self.nvs_lpips,
-                    # 'rgb_preds'      : np.stack(rgb_preds),
-                    # 'rgb_gts'        : np.stack(rgb_gts),
-                    # 'rgb_conds'      : np.stack(rgb_conds),
                 }
 
                 save_folder = f'{pl_module.logger.save_dir}/evaluation/epoch_99'
                 os.makedirs(f'{save_folder}', exist_ok=True)
-                # os.makedirs(f'{save_folder}/images/gts', exist_ok=True)
-                # os.makedirs(f'{save_folder}/images/preds', exist_ok=True)
-                # os.makedirs(f'{save_folder}/images/conds', exist_ok=True)
-                
-                # for index in tqdm.tqdm(range(len(rgb_preds)), desc='saving evaluation results', leave=False):
-                #     img_pred = Image.fromarray(rgb_preds[index])
-                #     img_pred.save(f'{save_folder}/images/preds/{index:03d}.png')
-                #     img_gt = Image.fromarray(rgb_gts[index])
-                #     img_gt.save(f'{save_folder}/images/gts/{index:03d}.png')
-                #     img_cond = Image.fromarray(rgb_conds[index])
-                #     img_cond.save(f'{save_folder}/images/conds/{index:03d}.png')
+
                 torch.save(ret_save, f'{save_folder}/results.tar')
 
                 # # * log visualization

@@ -10,7 +10,8 @@ import multiprocessing
 # python run_pipeline.py --object_type GSO_demo_tab3_row3
 # python run_pipeline.py --object_type GSO_demo
 
-available_gpus         = [0,1,2,3,4,5,6,7]  
+available_gpus         = [0,1,2,5,7]  
+# available_gpus         = [0,1,2,3,4,5,6,7]  
 max_parallel_processes = len(available_gpus)
 
 def check_gpu_memory(gpu_id):
@@ -49,7 +50,7 @@ def find_last_log(dir_path):
 if __name__ == "__main__":
     opt = get_configures()
 
-    train_view_setting = [5,4,3,2]
+    train_view_setting = [3]
 
     args_list = []
     for train_view in train_view_setting:
