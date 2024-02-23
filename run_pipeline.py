@@ -65,7 +65,6 @@ if __name__ == "__main__":
                     all_view += 1
 
             if all_view == train_view:
-                print(f'No Find {class_name} view {train_view}!!!')
                 args_list.append(
                     [
                         opt.object_type, class_name, train_view
