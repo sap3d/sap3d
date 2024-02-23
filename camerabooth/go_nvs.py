@@ -126,13 +126,6 @@ def go_nvs(
         image_cond.save(f'{save_cond_dir}/{i:03d}.png')
     
     # * pre-compute 7x12 all camera poses
-    # delta_elevations = [-45. * np.pi / 180.] * 12 + \
-    #                    [-30. * np.pi / 180.] * 12 + \
-    #                    [-15. * np.pi / 180.] * 12 + \
-    #                    [  0. * np.pi / 180.] * 12 + \
-    #                    [ 15. * np.pi / 180.] * 12 + \
-    #                    [ 30. * np.pi / 180.] * 12 + \
-    #                    [ 45. * np.pi / 180.] * 12
     delta_elevations = [-15. * np.pi / 180.] * 12 + \
                        [  0. * np.pi / 180.] * 12 + \
                        [ 15. * np.pi / 180.] * 12 + \
