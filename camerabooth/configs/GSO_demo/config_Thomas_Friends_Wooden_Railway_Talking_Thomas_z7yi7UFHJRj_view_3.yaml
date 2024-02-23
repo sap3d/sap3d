@@ -4,7 +4,7 @@ data:
     in_the_wild: true
     nearest_cond_views: true
     num_workers: 0
-    objaverse_path: /shared/xinyang/threetothreed/dataset/data/objaverse
+    objaverse_path: ../dataset/data/objaverse
     reg_objaverse: true
     root_dir: ../dataset/data/train/GSO_demo/Thomas_Friends_Wooden_Railway_Talking_Thomas_z7yi7UFHJRj
     total_view: 3
@@ -27,11 +27,11 @@ lightning:
       params:
         a_gt:
         - 0.5000000000000002
-        - 0.5000000070739893
+        - 0.5000000070739894
         - 0.5000000000000001
         b_gt:
         - 0.0
-        - 0.1249999936757471
+        - 0.12499999367574709
         - 0.75
         batch_frequency: 40000
         c_gt:
@@ -69,17 +69,17 @@ model:
   base_learning_rate: 0.0001
   params:
     a_init:
-    - 0.5055555555555555
-    - 0.5451541333022474
-    - 0.5869306358195889
+    - 0.5
+    - 0.5753945727865057
+    - 0.5865226300373461
     b_init:
     - 0.0
-    - 0.12633697944427785
-    - 0.7494465932230443
+    - 0.12569595176511947
+    - 0.7500401150317292
     c_init:
-    - -4.050918277931359e-05
-    - 0.00024050626259240564
-    - -0.0001556205185996148
+    - -4.2212167120795184e-05
+    - 0.00024016124810923224
+    - -0.00015459439621429944
     channels: 4
     cond_stage_config:
       target: ldm.modules.encoders.modules.FrozenCLIPImageEmbedder

@@ -4,7 +4,7 @@ data:
     in_the_wild: true
     nearest_cond_views: true
     num_workers: 0
-    objaverse_path: /shared/xinyang/threetothreed/dataset/data/objaverse
+    objaverse_path: ../dataset/data/objaverse
     reg_objaverse: true
     root_dir: ../dataset/data/train/GSO_demo/Vtech_Roll_Learn_Turtle
     total_view: 3
@@ -32,7 +32,7 @@ lightning:
         b_gt:
         - 0.0
         - 0.24999999999999997
-        - 0.7499999957075972
+        - 0.7499999957075973
         batch_frequency: 40000
         c_gt:
         - -2.9802321118869e-07
@@ -69,17 +69,17 @@ model:
   base_learning_rate: 0.0001
   params:
     a_init:
-    - 0.3111111111111111
-    - 0.26780240794204424
-    - 0.1424756925090902
+    - 0.5
+    - 0.4191963091561691
+    - 0.26758354512309135
     b_init:
     - 0.0
-    - 0.2503570892843798
-    - 0.7504608053215147
+    - 0.25044490971738953
+    - 0.7505932842197541
     c_init:
-    - 0.0009134972757972118
-    - 0.0005876075484161676
-    - -0.0009359169702744768
+    - 0.0009145190636175979
+    - 0.0005892900270102316
+    - -0.0009341815387669301
     channels: 4
     cond_stage_config:
       target: ldm.modules.encoders.modules.FrozenCLIPImageEmbedder

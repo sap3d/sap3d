@@ -21,3 +21,5 @@ dataset/data/objaverse.tar.gz
 **/*.tar.gz
 **/*.pth.tmp
 results
+run_pipelin_.sh
+run_pipelin_.py

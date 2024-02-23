@@ -4,7 +4,7 @@ data:
     in_the_wild: true
     nearest_cond_views: true
     num_workers: 0
-    objaverse_path: /shared/xinyang/threetothreed/dataset/data/objaverse
+    objaverse_path: ../dataset/data/objaverse
     reg_objaverse: true
     root_dir: ../dataset/data/train/GSO_demo/Transformers_Age_of_Extinction_Mega_1Step_Bumblebee_Figure
     total_view: 3
@@ -32,7 +32,7 @@ lightning:
         b_gt:
         - 0.0
         - 0.25000000429240354
-        - 0.7499999957075972
+        - 0.7499999957075973
         batch_frequency: 40000
         c_gt:
         - -1.9914435465752588e-07
@@ -69,17 +69,17 @@ model:
   base_learning_rate: 0.0001
   params:
     a_init:
-    - 0.49444444444444446
-    - 0.5726237954997422
-    - 0.4966891644007714
+    - 0.5
+    - 0.5001567469799689
+    - 0.48503948547342446
     b_init:
     - 0.0
-    - 0.25036902458980204
-    - 0.7495177558381658
+    - 0.2507463846267286
+    - 0.7496404757899556
     c_init:
-    - 0.0008668300355723397
-    - 0.000986095978920013
-    - 0.0008004664092209346
+    - 0.0008675112316483943
+    - 0.0009874179091602059
+    - 0.0007997718031792025
     channels: 4
     cond_stage_config:
       target: ldm.modules.encoders.modules.FrozenCLIPImageEmbedder

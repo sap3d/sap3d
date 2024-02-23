@@ -62,24 +62,24 @@ lightning:
   trainer:
     accumulate_grad_batches: 1
     benchmark: true
-    max_epochs: 1
+    max_epochs: 100
     num_sanity_val_steps: 0
     val_check_interval: 10
 model:
   base_learning_rate: 0.0001
   params:
     a_init:
-    - 0.3277777777777778
-    - 0.32779069463038113
-    - 0.325856644054647
+    - 0.5
+    - 0.5807233206096958
+    - 0.4627191728850987
     b_init:
     - 0.0
-    - 0.2501221527369254
-    - 0.7377394410628775
+    - 0.12659245355150445
+    - 0.7495989558635103
     c_init:
-    - -0.0016157837246844053
-    - 1.4668388817552979e-05
-    - -0.0007268076504988016
+    - -0.001615102525978391
+    - 1.4316443475952717e-05
+    - -0.0007264737736213865
     channels: 4
     cond_stage_config:
       target: ldm.modules.encoders.modules.FrozenCLIPImageEmbedder

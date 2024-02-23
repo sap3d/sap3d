@@ -6,13 +6,13 @@ data:
     num_workers: 0
     objaverse_path: ../dataset/data/objaverse
     reg_objaverse: true
-    root_dir: ../dataset/data/train/GSO_demo/3D_Dollhouse_Happy_Brother
+    root_dir: ../dataset/data/train/GSO_add/3D_Dollhouse_Sofa_view_3
     total_view: 3
     train:
       image_transforms:
         size: 256
       validation: false
-    train_view: 3
+    train_view: 5
     validation:
       image_transforms:
         size: 256
@@ -26,18 +26,18 @@ lightning:
     image_logger:
       params:
         a_gt:
-        - 0.5000000000000002
-        - 0.33333334390628333
-        - 0.33333334390628333
+        - 0.33333333085948863
+        - 0.5000000070739952
+        - 0.5000000070739952
         b_gt:
         - 0.0
-        - 0.12500001168508693
-        - 0.8749999883149131
+        - 0.12499999367575056
+        - 0.8750000063242495
         batch_frequency: 40000
         c_gt:
-        - -2.9802321118869e-07
-        - -2.6824179544249205e-07
-        - -2.6824179544249205e-07
+        - -1.9914435465752588e-07
+        - 1.4395592495830556e-07
+        - 1.4395592495830556e-07
         disabled: false
         in_the_wild: true
         increase_log_steps: false

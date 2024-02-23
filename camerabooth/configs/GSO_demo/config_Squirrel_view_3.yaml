@@ -4,7 +4,7 @@ data:
     in_the_wild: true
     nearest_cond_views: true
     num_workers: 0
-    objaverse_path: /shared/xinyang/threetothreed/dataset/data/objaverse
+    objaverse_path: ../dataset/data/objaverse
     reg_objaverse: true
     root_dir: ../dataset/data/train/GSO_demo/Squirrel
     total_view: 3
@@ -32,7 +32,7 @@ lightning:
         b_gt:
         - 0.0
         - 0.25000000474318645
-        - 0.874999990114498
+        - 0.8749999901144979
         batch_frequency: 40000
         c_gt:
         - -7.559567289610366e-08
@@ -69,17 +69,17 @@ model:
   base_learning_rate: 0.0001
   params:
     a_init:
-    - 0.3055555555555556
-    - 0.46883216103211456
-    - 0.3577048527936585
+    - 0.5
+    - 0.5858845095373513
+    - 0.5798012276150728
     b_init:
     - 0.0
-    - 0.25066348434932867
-    - 0.8746807009913513
+    - 0.2501880188450516
+    - 0.8743603827444744
     c_init:
-    - 0.0002343493095710184
-    - 0.0003079286274400493
-    - -0.0003695158180037707
+    - 0.00023400870388862977
+    - 0.00030689443937645
+    - -0.00036917357453306445
     channels: 4
     cond_stage_config:
       target: ldm.modules.encoders.modules.FrozenCLIPImageEmbedder

@@ -25,6 +25,21 @@ from PIL import Image
 from torch import autocast
 from torchvision import transforms
 
+setting1 = [
+    '3D_Dollhouse_Happy_Brother',
+    'CHICKEN_RACER',
+    'Crosley_Alarm_Clock_Vintage_Metal',
+    'Marvel_Avengers_Titan_Hero_Series_Doctor_Doom',
+    'MINI_FIRE_ENGINE',
+    'MINI_ROLLER',
+    'My_Little_Pony_Princess_Celestia',
+    'Schleich_African_Black_Rhino',
+    'Schleich_Lion_Action_Figure',
+    'Thomas_Friends_Wooden_Railway_Talking_Thomas_z7yi7UFHJRj',
+    'Transformers_Age_of_Extinction_Stomp_and_Chomp_Grimlock_Figure',
+    'Vtech_Roll_Learn_Turtle'
+]
+
 def diffto8b(img): return (np.clip(0.5*(img+1.0),0.0,1.0)*255.).astype(np.uint8)
 
 def load_model_from_config(config, ckpt, device, verbose=False):
@@ -100,6 +115,7 @@ def go_nvs(
     azimuth_conds   : list = None,
     radius_conds    : list = None,
     saving_dir_path : str  = None,
+    object_name     : str  = "",
     use_sc          : bool = True,
     device_id       : int  = 0,
 ):
@@ -126,13 +142,22 @@ def go_nvs(
         image_cond.save(f'{save_cond_dir}/{i:03d}.png')
     
     # * pre-compute 7x12 all camera poses
-    delta_elevations = [-15. * np.pi / 180.] * 12 + \
-                       [  0. * np.pi / 180.] * 12 + \
-                       [ 15. * np.pi / 180.] * 12 + \
-                       [ 30. * np.pi / 180.] * 12 + \
-                       [ 45. * np.pi / 180.] * 12 + \
-                       [ 60. * np.pi / 180.] * 12 + \
-                       [ 75. * np.pi / 180.] * 12
+    if object_name in setting1:
+        delta_elevations = [-45. * np.pi / 180.] * 12 + \
+                        [-30. * np.pi / 180.] * 12 + \
+                        [-15. * np.pi / 180.] * 12 + \
+                        [  0. * np.pi / 180.] * 12 + \
+                        [ 15. * np.pi / 180.] * 12 + \
+                        [ 30. * np.pi / 180.] * 12 + \
+                        [ 45. * np.pi / 180.] * 12
+    else:
+        delta_elevations = [-15. * np.pi / 180.] * 12 + \
+                        [  0. * np.pi / 180.] * 12 + \
+                        [ 15. * np.pi / 180.] * 12 + \
+                        [ 30. * np.pi / 180.] * 12 + \
+                        [ 45. * np.pi / 180.] * 12 + \
+                        [ 60. * np.pi / 180.] * 12 + \
+                        [ 75. * np.pi / 180.] * 12
     delta_azimuths = [
         (0 + i * 30. * np.pi / 180.) for i in range(12)
     ] * 7
@@ -224,6 +249,7 @@ if __name__ == '__main__':
             azimuth_pred, 
             radius_pred, 
             saving_dir_path,
+            object_name=opt.object_name,
             use_sc=True,
         )
 

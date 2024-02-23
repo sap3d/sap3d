@@ -4,7 +4,7 @@ data:
     in_the_wild: true
     nearest_cond_views: true
     num_workers: 0
-    objaverse_path: /shared/xinyang/threetothreed/dataset/data/objaverse
+    objaverse_path: ../dataset/data/objaverse
     reg_objaverse: true
     root_dir: ../dataset/data/train/GSO_demo/Transformers_Age_of_Extinction_Stomp_and_Chomp_Grimlock_Figure
     total_view: 3
@@ -69,17 +69,17 @@ model:
   base_learning_rate: 0.0001
   params:
     a_init:
-    - 0.34444444444444444
-    - 0.34384250678202305
-    - 0.3425644213046863
+    - 0.5
+    - 0.4988345839255587
+    - 0.4981799603426601
     b_init:
     - 0.0
-    - 0.44090471498263967
-    - 0.6243190510278829
+    - 0.3759017877204036
+    - 0.6248834044631832
     c_init:
-    - -0.0004560525617011305
-    - -0.0003058324825116239
-    - -0.0017209927329112484
+    - -0.0004574149555033483
+    - -0.0003054786637581218
+    - -0.001722381400393523
     channels: 4
     cond_stage_config:
       target: ldm.modules.encoders.modules.FrozenCLIPImageEmbedder

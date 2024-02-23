@@ -2,7 +2,7 @@
 
 # how to run
 # cd $ROOT_DIR
-# sh run_pipeline.sh GSO_demo 3D_Dollhouse_Happy_Brother 5 0
+# sh run_pipeline.sh GSO_demo MINI_FIRE_ENGINE 5 0
 
 ROOT_DIR=/home/xinyang/sap3d # Change to Your ROOT_DIR
 
@@ -55,12 +55,12 @@ echo "SAP3D env python path: " $SAP3D_PYTHON_PATH
 #         --logdir experiments_${OBJECT_TYPE}_view_${OBJECT_VIEW}
 # fi
 
-# note 4. go nvs from diffusion model
-echo '######### Stage4: go nvs from diffusion model #########'
-cd ${ROOT_DIR}/camerabooth
-CUDA_VISIBLE_DEVICES=${GPU_ID} ${ZERO123_PYTHON_PATH} go_nvs.py --object_type ${OBJECT_TYPE} \
-                                                                                    --object_name ${OBJECT_NAME} \
-                                                                                    --train_view ${OBJECT_VIEW}
+# # note 4. go nvs from diffusion model
+# echo '######### Stage4: go nvs from diffusion model #########'
+# cd ${ROOT_DIR}/camerabooth
+# CUDA_VISIBLE_DEVICES=${GPU_ID} ${ZERO123_PYTHON_PATH} go_nvs.py --object_type ${OBJECT_TYPE} \
+#                                                                                     --object_name ${OBJECT_NAME} \
+#                                                                                     --train_view ${OBJECT_VIEW}
 
 # # ! run reconstrcution
 # # note 1. generate launch for nerf
@@ -82,10 +82,10 @@ CUDA_VISIBLE_DEVICES=${GPU_ID} ${ZERO123_PYTHON_PATH} go_nvs.py --object_type ${
 # # 4. go mesh
 # sh scripts/launchs/${OBJECT_TYPE}/run_mesh_${OBJECT_NAME}_view_${OBJECT_VIEW}.sh ${GPU_ID}
 
-# # 5. Calculate 3D Metrics
-# echo '######### Reconstruction Eval #########'
-# cd ${ROOT_DIR}/SyncDreamer
-# ${SAP3D_PYTHON_PATH} eval_mesh.py --target_res experiments_${OBJECT_TYPE}_mesh_view_${OBJECT_VIEW} --OBJECT_TYPE ${OBJECT_TYPE} --OBJECT_NAME ${OBJECT_NAME} --OBJECT_VIEW ${OBJECT_VIEW} --ROOT_DIR ${ROOT_DIR}
+# 5. Calculate 3D Metrics
+echo '######### Reconstruction Eval #########'
+cd ${ROOT_DIR}/SyncDreamer
+${SAP3D_PYTHON_PATH} eval_mesh.py --target_res experiments_${OBJECT_TYPE}_mesh_view_${OBJECT_VIEW} --OBJECT_TYPE ${OBJECT_TYPE} --OBJECT_NAME ${OBJECT_NAME} --OBJECT_VIEW ${OBJECT_VIEW} --ROOT_DIR ${ROOT_DIR}
 
 # 6. Calculate Pose Error
 echo '######### Pose Eval #########'
@@ -97,7 +97,7 @@ echo '######### 2D Metrics -- NVS #########'
 cd ${ROOT_DIR}/camerabooth
 ${SAP3D_PYTHON_PATH} scripts/generate_summary/summary_experiments_nvs.py --OBJECT_TYPE ${OBJECT_TYPE} --OBJECT_NAME ${OBJECT_NAME} --OBJECT_VIEW ${OBJECT_VIEW} --ROOT_DIR ${ROOT_DIR}
 
-# # 7. Calculate 2D Metrics
-# echo '######### 2D Metrics -- 3D Rendering #########'
-# cd ${ROOT_DIR}/camerabooth
-# ${SAP3D_PYTHON_PATH} scripts/generate_summary/summary_experiments_nvs_NeRF.py --target_res experiments_${OBJECT_TYPE}_view_${OBJECT_VIEW}_nerf --OBJECT_TYPE ${OBJECT_TYPE} --OBJECT_NAME ${OBJECT_NAME} --OBJECT_VIEW ${OBJECT_VIEW} --ROOT_DIR ${ROOT_DIR}
+# 7. Calculate 2D Metrics
+echo '######### 2D Metrics -- 3D Rendering #########'
+cd ${ROOT_DIR}/camerabooth
+${SAP3D_PYTHON_PATH} scripts/generate_summary/summary_experiments_nvs_NeRF.py --target_res experiments_${OBJECT_TYPE}_view_${OBJECT_VIEW}_nerf --OBJECT_TYPE ${OBJECT_TYPE} --OBJECT_NAME ${OBJECT_NAME} --OBJECT_VIEW ${OBJECT_VIEW} --ROOT_DIR ${ROOT_DIR}

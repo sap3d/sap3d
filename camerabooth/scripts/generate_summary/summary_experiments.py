@@ -119,7 +119,7 @@ if __name__ == '__main__':
     
     all_error_R = []
 
-    pdb.set_trace()
+    # pdb.set_trace()
     class_name = object_name
     # for ind, class_name in enumerate(class_names):
     exp_log_path = f'{root_folder}/{class_name}'
