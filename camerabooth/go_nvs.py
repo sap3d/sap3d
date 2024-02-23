@@ -31,7 +31,6 @@ setting1 = [
     'Crosley_Alarm_Clock_Vintage_Metal',
     'Marvel_Avengers_Titan_Hero_Series_Doctor_Doom',
     'MINI_FIRE_ENGINE',
-    'MINI_ROLLER',
     'My_Little_Pony_Princess_Celestia',
     'Schleich_African_Black_Rhino',
     'Schleich_Lion_Action_Figure',

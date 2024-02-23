@@ -2,7 +2,7 @@
 
 # how to run
 # cd $ROOT_DIR
-# sh run_pipeline.sh GSO_demo 3D_Dollhouse_Happy_Brother 5 0
+# sh run_pipeline.sh GSO_demo MINI_ROLLER 3 0
 
 ROOT_DIR=/home/xinyang/sap3d # Change to Your ROOT_DIR
 
