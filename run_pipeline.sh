@@ -13,7 +13,7 @@ GPU_ID=$4
 
 ZERO123_PYTHON_PATH=$(conda run -n zero123 which python)
 SAP3D_PYTHON_PATH=$(conda run -n sap3d which python)
-echo "Zero123 env python path: " $ZERO123_PYTHON_PATH
+echo "Zero123 env python path: " $ZERO123_PYTHON_PATH 
 echo "SAP3D env python path: " $SAP3D_PYTHON_PATH
 
 # if [ "${OBJECT_VIEW}" -gt "1" ]
