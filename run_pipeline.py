@@ -10,8 +10,8 @@ import multiprocessing
 # python run_pipeline.py --object_type GSO_demo_tab3_row3
 # python run_pipeline.py --object_type GSO_demo
 
-available_gpus         = [0,1,2,5,7]  
-# available_gpus         = [0,1,2,3,4,5,6,7]  
+# available_gpus         = [0,1,2,5,7]  
+available_gpus         = [0,1,2,3,4,5,6,7]  
 max_parallel_processes = len(available_gpus)
 
 def check_gpu_memory(gpu_id):
@@ -65,15 +65,12 @@ if __name__ == "__main__":
                     all_view += 1
 
             if all_view == train_view:
-                last_run = find_last_log(f'/shared/xinyang/threetothreed/3D_Recon/threestudio/experiments_{opt.object_type}_view_{train_view}_nerf/{class_name}_ours')
-                                
-                if not os.path.exists(f'{last_run}/ckpts'):
-                    print(f'No Find {class_name} view {train_view}!!!')
-                    args_list.append(
-                        [
-                            opt.object_type, class_name, train_view
-                        ]
-                    )
+                print(f'No Find {class_name} view {train_view}!!!')
+                args_list.append(
+                    [
+                        opt.object_type, class_name, train_view
+                    ]
+                )
                     
     print(len(args_list))
 
@@ -84,7 +81,7 @@ if __name__ == "__main__":
     for args in args_list:
         while not free_gpus:
             print("No free GPUs available. Waiting for a GPU to become free...")
-            time.sleep(1000)
+            time.sleep(300)
             free_gpus = get_free_gpus()
 
         gpu_id = free_gpus.pop(0)  
