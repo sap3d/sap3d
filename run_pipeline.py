@@ -80,7 +80,7 @@ if __name__ == "__main__":
     for args in args_list:
         while not free_gpus:
             print("No free GPUs available. Waiting for a GPU to become free...")
-            time.sleep(300)
+            time.sleep(1000)
             free_gpus = get_free_gpus()
 
         gpu_id = free_gpus.pop(0)  
