@@ -10,7 +10,7 @@ import multiprocessing
 # python run_pipeline.py --object_type GSO_demo_tab3_row3
 # python run_pipeline.py --object_type GSO_demo
 
-# available_gpus         = [0,1,2,5,7]  
+# available_gpus         = [1]  
 available_gpus         = [0,1,2,3,4,5,6,7]  
 max_parallel_processes = len(available_gpus)
 
@@ -50,7 +50,7 @@ def find_last_log(dir_path):
 if __name__ == "__main__":
     opt = get_configures()
 
-    train_view_setting = [3]
+    train_view_setting = [3, 4, 5, 2]
 
     args_list = []
     for train_view in train_view_setting:
@@ -65,11 +65,15 @@ if __name__ == "__main__":
                     all_view += 1
 
             if all_view == train_view:
-                args_list.append(
-                    [
-                        opt.object_type, class_name, train_view
-                    ]
-                )
+                last_run = find_last_log(f'3D_Recon/threestudio/experiments_{opt.object_type}_view_{train_view}_nerf/{class_name}_ours')
+                                
+                if not os.path.exists(f'{last_run}/ckpts'):
+                    print(f'No Find {class_name} view {train_view}!!!')
+                    args_list.append(
+                        [
+                            opt.object_type, class_name, train_view
+                        ]
+                    )
                     
     print(len(args_list))
 
