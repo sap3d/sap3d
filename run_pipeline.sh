@@ -3,8 +3,17 @@
 # how to run
 # cd $ROOT_DIR
 # sh run_pipeline.sh GSO_demo MINI_ROLLER 3 0
+# sh run_pipeline.sh DEMO test 3 5
 
-ROOT_DIR=/home/xinyang/sap3d # Change to Your ROOT_DIR
+# Check if the ROOT_DIR environment variable is set and not empty
+if [ -z "$ROOT_DIR" ]; then
+    # If ROOT_DIR is not set, use the default value
+    ROOT_DIR="/home/xinyang/sap3d" # Change to your ROOT_DIR
+else
+    # Explicitly set ROOT_DIR to its current value from the environment variable
+    ROOT_DIR=$ROOT_DIR
+    echo "Using ROOT_DIR from environment: $ROOT_DIR"
+fi
 
 OBJECT_TYPE=$1
 OBJECT_NAME=$2
@@ -75,7 +84,7 @@ echo '######### Stage6: go nerf #########'
 sh scripts/launchs/${OBJECT_TYPE}/run_nerf_${OBJECT_NAME}_view_${OBJECT_VIEW}.sh ${GPU_ID}
 
 # 3. generate launch for mesh
-${SAP3D_PYTHON_PATH} scripts/generate_launch/edit_launch_mesh_em11.py --object_type ${OBJECT_TYPE} \
+CUDA_VISIBLE_DEVICES=${GPU_ID} ${SAP3D_PYTHON_PATH} scripts/generate_launch/edit_launch_mesh_em11.py --object_type ${OBJECT_TYPE} \
                                                         --object_name ${OBJECT_NAME} \
                                                         --train_view ${OBJECT_VIEW}
 
@@ -85,19 +94,19 @@ sh scripts/launchs/${OBJECT_TYPE}/run_mesh_${OBJECT_NAME}_view_${OBJECT_VIEW}.sh
 # 5. Calculate 3D Metrics
 echo '######### Reconstruction Eval #########'
 cd ${ROOT_DIR}/SyncDreamer
-${SAP3D_PYTHON_PATH} eval_mesh.py --target_res experiments_${OBJECT_TYPE}_mesh_view_${OBJECT_VIEW} --OBJECT_TYPE ${OBJECT_TYPE} --OBJECT_NAME ${OBJECT_NAME} --OBJECT_VIEW ${OBJECT_VIEW} --ROOT_DIR ${ROOT_DIR}
+CUDA_VISIBLE_DEVICES=${GPU_ID} ${SAP3D_PYTHON_PATH} eval_mesh.py --target_res experiments_${OBJECT_TYPE}_mesh_view_${OBJECT_VIEW} --OBJECT_TYPE ${OBJECT_TYPE} --OBJECT_NAME ${OBJECT_NAME} --OBJECT_VIEW ${OBJECT_VIEW} --ROOT_DIR ${ROOT_DIR}
 
 # 6. Calculate Pose Error
 echo '######### Pose Eval #########'
 cd ${ROOT_DIR}/camerabooth
-${SAP3D_PYTHON_PATH} scripts/generate_summary/summary_experiments.py --OBJECT_TYPE ${OBJECT_TYPE} --OBJECT_NAME ${OBJECT_NAME} --OBJECT_VIEW ${OBJECT_VIEW} --ROOT_DIR ${ROOT_DIR}
+CUDA_VISIBLE_DEVICES=${GPU_ID} ${SAP3D_PYTHON_PATH} scripts/generate_summary/summary_experiments.py --OBJECT_TYPE ${OBJECT_TYPE} --OBJECT_NAME ${OBJECT_NAME} --OBJECT_VIEW ${OBJECT_VIEW} --ROOT_DIR ${ROOT_DIR}
 
 # 7. Calculate 2D Metrics
 echo '######### 2D Metrics -- NVS #########'
 cd ${ROOT_DIR}/camerabooth
-${SAP3D_PYTHON_PATH} scripts/generate_summary/summary_experiments_nvs.py --OBJECT_TYPE ${OBJECT_TYPE} --OBJECT_NAME ${OBJECT_NAME} --OBJECT_VIEW ${OBJECT_VIEW} --ROOT_DIR ${ROOT_DIR}
+CUDA_VISIBLE_DEVICES=${GPU_ID} ${SAP3D_PYTHON_PATH} scripts/generate_summary/summary_experiments_nvs.py --OBJECT_TYPE ${OBJECT_TYPE} --OBJECT_NAME ${OBJECT_NAME} --OBJECT_VIEW ${OBJECT_VIEW} --ROOT_DIR ${ROOT_DIR}
 
 # 7. Calculate 2D Metrics
 echo '######### 2D Metrics -- 3D Rendering #########'
 cd ${ROOT_DIR}/camerabooth
-${SAP3D_PYTHON_PATH} scripts/generate_summary/summary_experiments_nvs_NeRF.py --target_res experiments_${OBJECT_TYPE}_view_${OBJECT_VIEW}_nerf --OBJECT_TYPE ${OBJECT_TYPE} --OBJECT_NAME ${OBJECT_NAME} --OBJECT_VIEW ${OBJECT_VIEW} --ROOT_DIR ${ROOT_DIR}
+CUDA_VISIBLE_DEVICES=${GPU_ID} ${SAP3D_PYTHON_PATH} scripts/generate_summary/summary_experiments_nvs_NeRF.py --target_res experiments_${OBJECT_TYPE}_view_${OBJECT_VIEW}_nerf --OBJECT_TYPE ${OBJECT_TYPE} --OBJECT_NAME ${OBJECT_NAME} --OBJECT_VIEW ${OBJECT_VIEW} --ROOT_DIR ${ROOT_DIR}
