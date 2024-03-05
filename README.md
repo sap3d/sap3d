@@ -74,7 +74,7 @@ python run_pipeline.py --object_type GSO_demo
 - **3D NVS Outputs**: Look for these in folders named like `3D_Recon/threestudio/experiments_GSO_demo_view_5_nerf`.
 - **Evaluation Numbers**: Quantitative results are stored under `results` folder.
 
-
+To facilitate an accurate replication of our research outcomes, we have carefully assembled `results_standard/GSO_demo`. Acknowledging the substantial resource commitment involved (8 A100 GPUs for 1-2 days), we thoughtfully recommend processing a subset as a means to confirm your system's configuration, ensuring a thoughtful comparison of the results.
 
 
 ## Citation
