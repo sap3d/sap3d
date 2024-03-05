@@ -79,6 +79,10 @@ Our process yields comprehensive data sets, stored and accessible as follows:
 
 In our commitment to replicability and transparency, we have assembled a detailed repository of results for all test objects within `results_standard/GSO_demo`. Recognizing the considerable computational demand required (8 A100 GPUs across 1-2 days), we pragmatically suggest the processing of a selective subset of the data. This approach is designed to both confirm your system’s configuration and permit a meaningful, comparative analysis of the results.
 
+To generate the tables for better visualize the numbers for different settings, run:
+```bash
+python results_standard/run/summarize.py
+```
 
 ## Citation
 If you find our work inspiring or use our codebase in your research, please consider giving a star ⭐ and a citation.
