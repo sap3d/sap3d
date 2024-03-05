@@ -69,12 +69,15 @@ To execute the pipeline for all examples in the `dataset/data/train/GSO_demo` di
 python run_pipeline.py --object_type GSO_demo
 ```
 
-### Results and Numbers
-- **2D NVS Outputs**: These can be found in the `camerabooth/experiments_nvs/GSO_demo` directory.
-- **3D NVS Outputs**: Look for these in folders named like `3D_Recon/threestudio/experiments_GSO_demo_view_5_nerf`.
-- **Evaluation Numbers**: Quantitative results are stored under `results` folder.
+## Results and Numbers
 
-To facilitate an accurate replication of our research outcomes, we have carefully assembled results for all test objects under `results_standard/GSO_demo`. Acknowledging the substantial resource commitment involved (8 A100 GPUs for 1-2 days), we thoughtfully recommend processing a subset as a means to confirm your system's configuration, ensuring a thoughtful comparison of the results.
+Our process yields comprehensive data sets, stored and accessible as follows:
+
+- **2D NVS Outputs**: Accessible in the directory `camerabooth/experiments_nvs/GSO_demo`.
+- **3D NVS Outputs**: Found within folders named similarly to `3D_Recon/threestudio/experiments_GSO_demo_view_5_nerf`.
+- **Evaluation Metrics**: Quantitative results are comprehensively stored in the `results` folder.
+
+In our commitment to replicability and transparency, we have assembled a detailed repository of results for all test objects within `results_standard/GSO_demo`. Recognizing the considerable computational demand required (8 A100 GPUs across 1-2 days), we pragmatically suggest the processing of a selective subset of the data. This approach is designed to both confirm your system’s configuration and permit a meaningful, comparative analysis of the results.
 
 
 ## Citation
