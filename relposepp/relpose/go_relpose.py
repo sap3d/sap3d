@@ -865,11 +865,6 @@ if __name__ == '__main__':
 
         d_elevation_pred, d_azimuth_pred, d_r_pred = best_inference(
             mp,
-            # '/shared/xinyang/threetothreed/relposepp/ckpt_wild/relposepp_masked',
-            # 'finetune_best_old',
-            # "ckpts_finetune/best",
-            # 'ckpts_finetune/1026_0506_LR1e-05_N8_RandomNTrue_B36_Pretrainedckpt_back_AMP_TROURS_DDP',
-            # "ckpt_backbone",
             f'{object_path}/images',
             f'{object_path}/masks',
             num_to_eval=num_to_eval,
