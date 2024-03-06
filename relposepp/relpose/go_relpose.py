@@ -875,9 +875,6 @@ if __name__ == '__main__':
         client = Client("https://one-2-3-45-one-2-3-45.hf.space/")
         input_img_path = f'{object_path}/images/002.png'
         best_elevation_list = []
-        # for i in range(5):
-            # elevation_angle_deg = client.predict(input_img_path, True, api_name="/estimate_elevation")
-            # best_elevation_list.append(elevation_angle_deg)
         best_elevation_list = client.predict(input_img_path, True, api_name="/estimate_elevation")
         d_elevation_pred = d_elevation_pred - d_elevation_pred[0] + (90.0-best_elevation_list) / 180.
 
