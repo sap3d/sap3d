@@ -49,7 +49,7 @@ This pipeline encompasses 3 stages for pose estimation and reconstruction:
 - **Memory Considerations**: To ensure a smooth operation, your system should have at least 38GB of available memory.
 
 ### Initial Setup
-- **Configuring the Working Directory**: Please set your `ROOT_DIR` in the `run_pipeline.sh` script as the first step before launching the pipeline.
+- **Configuring the Working Directory**: Please set your `ROOT_DIR` as environment variable before launching the pipeline using command like `echo 'export ROOT_DIR=#Your_ROOT_DIR' >> ~/.bashrc`.
 
 ### Reconstruction and Evaluation
 
