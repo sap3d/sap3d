@@ -79,7 +79,8 @@ def create_thumbnail(image_path, size=(256, 256)):
 
 def prepare_dataset_structure(images):
     # Generate a unique directory name
-    random_dir_name = "test2"  # Use a fixed name for demonstration; in practice, consider using uuid4 for uniqueness
+    # random_dir_name = "test2"  # Use a fixed name for demonstration; in practice, consider using uuid4 for uniqueness
+    random_dir_name = str(uuid.uuid4())
     base_dir = os.path.join(DEMO_PATH, random_dir_name)
     print(base_dir)
     images_dir = os.path.join(base_dir, 'images')
