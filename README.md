@@ -84,6 +84,11 @@ To generate the tables for better visualize the numbers for different settings, 
 python results_standard/run/summarize.py
 ```
 
+## Gradio Demo
+
+For using gradio interface to easily reconstrcut in the wild objects, you could run `gradio demo/sap3d/app.py`.
+
+
 ## Citation
 If you find our work inspiring or use our codebase in your research, please consider giving a star ⭐ and a citation.
 ```
