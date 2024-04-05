@@ -13,7 +13,7 @@ shape and texture improve with more views
 > Berkeley AI Research, UC Berkeley    
 > Preprint
 
-[project page](https://SAP3D.github.io/) | [arxiv]() | [bibtex](#citation)
+[project page](https://SAP3D.github.io/) | [arxiv](https://arxiv.org/abs/2404.03652) | [bibtex](#citation)
 
 
 <!-- ## Features 
@@ -92,7 +92,14 @@ For using gradio interface to easily reconstrcut in the wild objects, you could 
 ## Citation
 If you find our work inspiring or use our codebase in your research, please consider giving a star ⭐ and a citation.
 ```
-
+@misc{sap3d,
+      title={The More You See in 2D, the More You Perceive in 3D}, 
+      author={Xinyang Han and Zelin Gao and Angjoo Kanazawa and Shubham Goel and Yossi Gandelsman},
+      year={2024},
+      eprint={2404.03652},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
 ```
 
 
