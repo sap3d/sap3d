@@ -11,7 +11,7 @@ shape and texture improve with more views
 > [**The More You See in 2D, the More You Perceive in 3D**](https://SAP3D.github.io/)            
 > [Xinyang Han*](https://github.com/XinyangHan), [Zelin Gao*](https://scholar.google.com/citations?user=kvHYP9MAAAAJ&hl=en), [Angjoo Kanazawa](http://people.eecs.berkeley.edu/~kanazawa), [Shubham Goel**](https://shubham-goel.github.io/), [Yossi Gandelsman**](https://yossigandelsman.github.io/)<br>
 > Berkeley AI Research, UC Berkeley    
-> Preprint
+> CVPR 2024 (Hightlight)
 
 [project page](https://SAP3D.github.io/) | [arxiv](https://arxiv.org/abs/2404.03652) | [bibtex](#citation)
 
