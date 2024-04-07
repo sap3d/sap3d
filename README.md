@@ -9,10 +9,8 @@ shape and texture improve with more views
 
 
 > [**The More You See in 2D, the More You Perceive in 3D**](https://SAP3D.github.io/)            
-> [Xinyang Han*](https://github.com/XinyangHan)<sup>1</sup>, [Zelin Gao*](https://scholar.google.com/citations?user=kvHYP9MAAAAJ&hl=en)<sup>2</sup>, [Angjoo Kanazawa](http://people.eecs.berkeley.edu/~kanazawa)<sup>1</sup>, [Shubham Goel](https://shubham-goel.github.io/)<sup>3&dagger;</sup>, [Yossi Gandelsman](https://yossigandelsman.github.io/)<sup>1&dagger;</sup><br>
-> <sup>1</sup> Berkeley AI Research, UC Berkeley    
-> <sup>2</sup> Zhejiang University  
-> <sup>3</sup> Avataar  
+> [Xinyang Han*](https://github.com/XinyangHan)<sup>1</sup>, [Zelin Gao*](https://scholar.google.com/citations?user=kvHYP9MAAAAJ&hl=en)<sup>2</sup>, [Angjoo Kanazawa](http://people.eecs.berkeley.edu/~kanazawa)<sup>1</sup>, [Shubham Goel](https://shubham-goel.github.io/)<sup>&dagger;3</sup>, [Yossi Gandelsman](https://yossigandelsman.github.io/)<sup>&dagger;1</sup><br>
+> <sup>1</sup> UC Berkeley, <sup>2</sup> Zhejiang University, <sup>3</sup> Avataar  
 > CVPR 2024 (Highlight)
 
 [project page](https://SAP3D.github.io/) | [arxiv](https://arxiv.org/abs/2404.03652) | [bibtex](#citation)
