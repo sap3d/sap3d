@@ -86,7 +86,7 @@ python results_standard/run/summarize.py
 
 ## Gradio Demo
 
-For using gradio interface to easily reconstrcut in the wild objects, you could run `gradio demo/sap3d/app.py`.
+For using gradio interface to easily reconstruct in the wild objects, you could run `gradio demo/sap3d/app.py`. (Though this would take up to an hour to get the results)
 
 
 ## Citation
