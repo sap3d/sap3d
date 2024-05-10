@@ -60,7 +60,7 @@ sh run_pipeline.sh GSO_demo OBJECT_NAME INPUT_VIEWS GPU_INDEX
 ```
 For instance:
 ```bash
-sh run_pipeline.sh GSO_demo MINI_FIRE_ENGINE 5 0
+sh run_pipeline.sh GSO_demo Dino_3 5 0
 ```
 
 **Batch Processing**:
