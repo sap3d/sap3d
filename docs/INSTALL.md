@@ -24,7 +24,7 @@ For a smooth setup of the sap3d environment, please follow the instructions belo
      ```bash
      cd camerabooth && wget https://cv.cs.columbia.edu/zero123/assets/105000.ckpt && mv 105000.ckpt zero123_sm.ckpt
      ```
-3. Download the `relpose` ckpt from `https://drive.google.com/file/d/1U7lULb2rzYnbm098hmF_kFJk3dTNJbOS/view?usp=sharing` and place it here: `relposepp/relpose/ckpts_finetune/best/checkpoints/ckpt_000105000.pth`
+3. Download the `relpose` ckpt from `https://drive.google.com/file/d/1U7lULb2rzYnbm098hmF_kFJk3dTNJbOS/view?usp=sharing` and place it here: `relposepp/relpose/ckpts_finetune/best/checkpoints/ckpt_000105000.pth`. (Also, we share a better version here that has been trained for more steps: `https://drive.google.com/file/d/1Fqe3Sz2plcFktQ6nfBNW4mPCCpcvv7K9/view?usp=sharing`, you can download, rename and place it here ``relposepp/relpose/ckpts_finetune/best/checkpoints/ckpt_000105000.pth` to use a stronger version.)
 
 4. (Optional) You might need this [ckpt](https://drive.google.com/file/d/1lZFxIXi9fXkZoRGbfsWWr8wPlDriVa8P/view?usp=sharing) when initializing relpose if you cannot download it from the hub and place it here: `~/.cache/torch/hub/checkpoints/resnet50_lpf4_finetune-cad66808.pth`.
 
