@@ -92,13 +92,12 @@ For using gradio interface to easily reconstruct in the wild objects, you could 
 ## Citation
 If you find our work inspiring or use our codebase in your research, please consider giving a star ⭐ and a citation.
 ```
-@misc{sap3d,
-      title={The More You See in 2D, the More You Perceive in 3D}, 
-      author={Xinyang Han and Zelin Gao and Angjoo Kanazawa and Shubham Goel and Yossi Gandelsman},
-      year={2024},
-      eprint={2404.03652},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+@inproceedings{han2024more,
+  title={The More You See in 2D the More You Perceive in 3D},
+  author={Han, Xinyang and Gao, Zelin and Kanazawa, Angjoo and Goel, Shubham and Gandelsman, Yossi},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={20912--20922},
+  year={2024}
 }
 ```
 
